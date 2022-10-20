@@ -20,6 +20,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('profile', fn() => view('pages.user-profile'))->name('profile');
+
 Route::get('dashboard', fn() => view('pages.dashboard'))->name('dashboard');
 
 // Route::get('user-management', fn() => view('pages.user-management'))->name('user-management');

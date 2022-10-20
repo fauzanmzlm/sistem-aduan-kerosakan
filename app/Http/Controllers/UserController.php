@@ -23,7 +23,11 @@ class UserController extends Controller
             return DataTables::of($data)->addIndexColumn()->make(true);
         }
 
-        return view('pages.user-management');
+        $title = 'User Management';
+
+        return view('pages.user-management', [
+            'title' => $title
+        ]);
     }
 
     /**
