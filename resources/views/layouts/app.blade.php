@@ -41,6 +41,15 @@
             float: right;
             margin-left:10px;
         }
+
+
+
+        .custom-ellipsis-1 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
     </style>
 </head>
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('main');
+
+Route::get('/borang1', function () {
+    $pdf = Pdf::loadView('borang1');
+    return $pdf->stream("dompdf_out.pdf", array("Attachment" => false));
+    // return $pdf->download('borang1.pdf');
+})->name('borang1');
+
+Route::get('/borang2', function () {
+    $pdf = Pdf::loadView('borang2');
+    return $pdf->stream("dompdf_out.pdf", array("Attachment" => false));
+    // return $pdf->download('borang2.pdf');
+})->name('borang2');
 
 Auth::routes();
 

@@ -55,7 +55,17 @@
                     </div>
                     <span class="nav-link-text ms-1">Aduan</span>
                 </a>
-            {{-- </li>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ str_contains(request()->url(), 'borang1') == true ? 'active' : '' }}" href="{{ route('borang1') }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Borang 1</span>
+                </a>
+            </li>
+            {{-- 
             <li class="nav-item">
                 <a class="nav-link {{ str_contains(request()->url(), 'tables') == true ? 'active' : '' }}" href="">
                     <div
