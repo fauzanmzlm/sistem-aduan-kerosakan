@@ -39,6 +39,14 @@ Route::get('dashboard', fn() => view('pages.dashboard'))->name('dashboard');
 
 // Route::get('user-management', fn() => view('pages.user-management'))->name('user-management');
 
+Route::prefix('administrator')->name('administrator.')->group(function () {
+    Route::resource('complaints', App\Http\Controllers\Administrator\ComplaintController::class);
+});
+
+Route::prefix('complainant')->name('complainant.')->group(function () {
+    Route::resource('complaints', App\Http\Controllers\Complainant\ComplaintController::class);
+});
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('users', UserController::class);

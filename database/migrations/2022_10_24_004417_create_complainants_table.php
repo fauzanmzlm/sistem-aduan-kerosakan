@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             
             $table->string('department_name');
-            $table->string('complaint_location');
-            $table->date('complaint_date');
+            $table->string('location');
+            $table->date('date');
             $table->text('signature');
             $table->string('name_of_signature');
             $table->string('date_of_signature');

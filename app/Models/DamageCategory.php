@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class DamageCategory extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
 }
