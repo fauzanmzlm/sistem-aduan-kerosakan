@@ -14,12 +14,12 @@
                     <h6>Senarai Borang Aduan</h6>
                     <ol>
                         <li>
-                            <a target="_blank" href="{{ route('complainant.complaints.create') }}?form=1">
+                            <a target="_blank" href="{{ route('complainant.government-movable-assets-damage-report.create') }}">
                                 BORANG LAPORAN KEROSAKAN ASET ALIH KERAJAAN
                             </a>
                         </li>
                         <li>
-                            <a target="_blank" href="{{ route('complainant.complaints.create') }}?form=2">
+                            <a target="_blank" href="{{ route('complainant.infrastructure-damage-report.create') }}">
                                 BORANG LAPORAN KEROSAKAN INFRASTRUKTUR (BLKI)
                             </a>
                         </li>

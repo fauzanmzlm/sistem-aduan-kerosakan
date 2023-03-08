@@ -37,7 +37,7 @@
     </div>
 @endsection
 
-@push('js')
+@push('scripts')
     <script>
         $(document).ready(function () {
             var table = $('#example').on( 'init.dt', function () {

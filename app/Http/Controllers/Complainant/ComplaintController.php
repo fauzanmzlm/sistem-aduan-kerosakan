@@ -28,25 +28,28 @@ class ComplaintController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function createComplaintGovernmentMovableAssetsDamageReportForm() 
     {
-        $form = request()->form;
-
         $damageCategories = DamageCategory::all();
+        $title = "BORANG LAPORAN KEROSAKAN ASET ALIH KERAJAAN";
 
-        if (empty($form)) {
-            return abort(404, 'Something went wrong');
-        }
+        return view("complaints.complainant.form.government-movable-assets-damage-report.create", [
+            'title' => $title,
+            'damageCategories' => $damageCategories
+        ]);
+    }
 
-        if ($form == 1) {
-            $title = 'BORANG LAPORAN KEROSAKAN ASET ALIH KERAJAAN';
-        } else if ($form == 2) {
-            $title = 'BORANG LAPORAN KEROSAKAN INFRASTRUKTUR (BLKI)';
-        } else {
-            return abort(404, 'Something went wrong');
-        }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createInfrastructureDamageReportForm() 
+    {
+        $damageCategories = DamageCategory::all();
+        $title = "BORANG LAPORAN KEROSAKAN INFRASTRUKTUR (BLKI)";
 
-        return view("complaints.complainant.form.{$form}.create", [
+        return view("complaint.government-movable-assets-damage-report.create", [
             'title' => $title,
             'damageCategories' => $damageCategories
         ]);

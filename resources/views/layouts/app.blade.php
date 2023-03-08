@@ -1,133 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="utf-8" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('argon/img/apple-icon.png') }}">
-    <link rel="icon" type="image/png" href="{{ asset('argon/img/favicon.png') }}">
-    <title>@yield('title')</title>
-    <!-- Fonts and icons -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-    <!-- Nucleo Icons -->
-    <link href="{{ asset('argon/assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('argon/assets/css/nucleo-svg.css') }}" rel="stylesheet" />
-    <!-- Font Awesome Icons -->
-    <link href="{{ asset('argon/assets/css/nucleo-svg.css') }}" rel="stylesheet" />
-    <!-- Sweet Alert 2 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.6.1/sweetalert2.css" integrity="sha512-0BcnfLcXBm81KVM/wzoS7yZRVflcQC3rj/Wqgi4cHSGktXTMcXrP6kquf1I14JFUj2LiFCfpZCSf/+478ifefA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Toastr - CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.0/css/toastr.css" rel="stylesheet" />
-    <!-- CSS Files -->
-    <link id="pagestyle" href="{{ asset('argon/assets/css/argon-dashboard.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.12.1/af-2.4.0/b-2.2.3/b-colvis-2.2.3/b-html5-2.2.3/b-print-2.2.3/cr-1.5.6/date-1.1.2/fc-4.1.0/fh-3.2.4/kt-2.7.0/r-2.3.0/rg-1.2.0/rr-1.2.8/sc-2.0.7/sb-1.3.4/sp-2.0.2/sl-1.4.0/sr-1.1.1/datatables.min.css"/>
-    
-    @stack('style')
+    <title>@yield('title') - SAK</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="{{ asset('yoraui/vendors/mdi/css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('yoraui/vendors/css/vendor.bundle.base.css') }}">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="{{ asset('yoraui/vendors/jqvmap/jqvmap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('yoraui/vendors/flag-icon-css/css/flag-icon.min.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="{{ asset('yoraui/css/horizontal-layout-light/style.css') }}">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="{{ asset('yoraui/images/favicon.png') }}" />
+
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="{{ asset('yoraui/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('yoraui/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
+    <link rel="stylesheet" href="{{ asset('yoraui/vendors/jquery-toast-plugin/jquery.toast.min.css') }}">
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.min.css"> --}}
+    <!-- End plugin css for this page -->
+
+
+
+
+    @stack('css')
+
+    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
 
     <style>
-    
-    <style>
-        /* table.dataTable td {
-            font-size: 14px;
-        } */
-
-        .dataTables_info {
-            font-size: 0.75rem;
-            color: #344767;
+        .custom-datatable-show-entries {
+            width: 50px;
         }
 
-        /* .table thead th {
-            padding: 2% 3%;
+        .swal-footer {
+            text-align: right;
         }
-
-        .table tbody td {
-            padding: 2% 3%;
-        } */
-        div.dt-buttons {
-            float: right;
-            margin-left:10px;
-        }
-
-        .border-custom-1 {
-            border: 1px solid lightgray;
-        }
-
-        .custom-ellipsis-1 {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
     </style>
 </head>
 
-<body class="{{ $class ?? '' }}">
-
-    <div id="baseAjaxModal"></div>
-    
+<body>
     @guest
         @yield('content')
     @endguest
 
     @auth
-        @if (in_array(request()->route()->getName(), ['sign-in-static', 'sign-up-static', 'login', 'register', 'recover-password', 'rtl', 'virtual-reality']))
+        @if (in_array(request()->route()->getName(),
+                ['sign-in-static', 'sign-up-static', 'login', 'register', 'recover-password', 'rtl', 'virtual-reality']))
             @yield('content')
         @else
-            @if (!in_array(request()->route()->getName(), ['profile', 'profile-static']))
-                <div class="min-height-300 bg-primary position-absolute w-100"></div>
-            @elseif (in_array(request()->route()->getName(), ['profile-static', 'profile']))
-                <div class="position-absolute w-100 min-height-300 top-0" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/profile-layout-header.jpg'); background-position-y: 50%;">
-                    <span class="mask bg-primary opacity-6"></span>
+            <!-- container-scroller -->
+            <div class="container-scroller">
+                <!-- partial:partials/_horizontal-navbar.html -->
+                <div class="horizontal-menu">
+                    <!-- top navbar -->
+                    @include('layouts.navbar.auth.top')
+                    <!-- end top navbar -->
+                    <!-- bottom navbar -->
+                    @include('layouts.navbar.auth.bottom')
+                    <!-- end bottom navbar -->
                 </div>
-            @endif
-            @include('layouts.navbars.auth.sidenav')
-            <main class="main-content border-radius-lg">
-                @yield('content')
-            </main>
-            @include('components.fixed-plugin')
+
+                <!-- partial -->
+                <div class="container-fluid page-body-wrapper">
+                    <div class="main-panel">
+                        <div class="content-wrapper">
+                            @yield('content')
+                        </div>
+                        <!-- content-wrapper ends -->
+                        <!-- partial:partials/_footer.html -->
+                        @include('layouts.footers.auth.footer')
+
+                        <!-- partial -->
+                    </div>
+                    <!-- main-panel ends -->
+                </div>
+                <!-- page-body-wrapper ends -->
+            </div>
+            <!-- end container-scroller -->
+
+            {{-- <div class="modal demo-modal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Modal title</h5>
+                            <button type="button" class="close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="mb-0">Modal body text goes here.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success">Submit</button>
+                            <button type="button" class="btn btn-light">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
         @endif
     @endauth
 
-    <!-- JQuery -->
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <!-- Core JS Files -->
-    <script src="{{ asset('argon/assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('argon/assets/js/core/bootstrap.min.js') }}"></script>
-    <!-- Scrollbar -->
-    <script src="{{ asset('argon/assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('argon/assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
-    <script>
-        var win = navigator.platform.indexOf('Win') > -1;
-        if (win && document.querySelector('#sidenav-scrollbar')) {
-            var options = {
-                damping: '0.5'
-            }
-            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-        }
-    </script>
-    <!-- Github buttons -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="{{ asset('argon/assets/js/argon-dashboard.js') }}"></script>
-    <!-- Datatables -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.12.1/af-2.4.0/b-2.2.3/b-colvis-2.2.3/b-html5-2.2.3/b-print-2.2.3/cr-1.5.6/date-1.1.2/fc-4.1.0/fh-3.2.4/kt-2.7.0/r-2.3.0/rg-1.2.0/rr-1.2.8/sc-2.0.7/sb-1.3.4/sp-2.0.2/sl-1.4.0/sr-1.1.1/datatables.min.js"></script>
-    <!-- Sweet Alert 2 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.6.1/sweetalert2.all.min.js" integrity="sha512-xLNVEmNEzNF+o0AuIls+RHT0MYZK05j7WZxtiWVzVNJdY+LXcGJDGuGI9ibXx3Aqc6/cCESkC7r0Pl3sVE5J7Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Toastr -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.0/js/toastr.js"></script>
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <!-- Moment JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <!-- JQuery Validation -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/additional-methods.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/additional-methods.min.js"></script>
-    
+    <!-- base:js -->
+    <script src="{{ asset('yoraui/vendors/js/vendor.bundle.base.js') }}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <script src="{{ asset('yoraui/vendors/jquery.flot/jquery.flot.js') }}"></script>
+    <script src="{{ asset('yoraui/vendors/jquery.flot/jquery.flot.pie.js') }}"></script>
+    <script src="{{ asset('yoraui/vendors/jquery.flot/jquery.flot.resize.js') }}"></script>
+    <script src="{{ asset('yoraui/vendors/jqvmap/jquery.vmap.min.js') }}"></script>
+    <script src="{{ asset('yoraui/vendors/jqvmap/maps/jquery.vmap.world.js') }}"></script>
+    <script src="{{ asset('yoraui/vendors/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
+    <script src="{{ asset('yoraui/vendors/peity/jquery.peity.min.js') }}"></script>
+    <script src="{{ asset('yoraui/js/jquery.flot.dashes.js') }}"></script>
+    <script src="{{ asset('yoraui/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('yoraui/vendors/datatables.net/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('yoraui/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
+    <script src="{{ asset('yoraui/vendors/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
+
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script src="{{ asset('yoraui/js/off-canvas.js') }}"></script>
+    <script src="{{ asset('yoraui/js/hoverable-collapse.js') }}"></script>
+    <script src="{{ asset('yoraui/js/template.js') }}"></script>
+    <script src="{{ asset('yoraui/js/settings.js') }}"></script>
+    <script src="{{ asset('yoraui/js/todolist.js') }}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="{{ asset('yoraui/js/dashboard.js') }}"></script>
+    <script src="{{ asset('yoraui/js/todolist.js') }}"></script>
+    <script src="{{ asset('yoraui/js/formpickers.js') }}"></script>
+    <script src="{{ asset('yoraui/js/data-table.js') }}"></script>
+    <script src="{{ asset('yoraui/js/jquery-toast.js') }}"></script>
+    {{-- <script src="{{ asset('yoraui/vendors/sweetalert/sweetalert.min.js') }}"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.min.js"></script> --}}
+
+    @stack('custom_js')
+    <!-- End custom js for this page-->
+
+    <script src="{{ asset('yoraui/js/tooltips.js') }}"></script>
+    <script src="{{ asset('yoraui/js/popover.js') }}"></script>
+
     @stack('scripts')
 
     <script type="text/javascript">
@@ -273,67 +294,189 @@
             })
         }
 
-        const processDeletion = (elem, successCallback, failCallback) => {
-            Swal.fire({
-                title: 'Sila tunggu sebentar...',
-                onOpen: function() {
-                    Swal.showLoading();
-                    confirmDelete(elem).then((choice) => {
-                        if (choice.value) {
-                            deleteItem(elem, successCallback, failCallback)
-                        } else {
-                            Swal.fire(
-                                'Batal',
-                                'Proses dibatalkan',
-                                'info'
-                            )
-                        }
-                    })
-                }
-            })
-        }
+        // const processDeletion = (elem, successCallback, failCallback) => {
+        //     Swal.fire({
+        //         title: 'Sila tunggu sebentar...',
+        //         onOpen: function() {
+        //             Swal.showLoading();
+        //             confirmDelete(elem).then((choice) => {
+        //                 if (choice.value) {
+        //                     deleteItem(elem, successCallback, failCallback)
+        //                 } else {
+        //                     Swal.fire(
+        //                         'Batal',
+        //                         'Proses dibatalkan',
+        //                         'info'
+        //                     )
+        //                 }
+        //             })
+        //         }
+        //     })
+        // }
 
-        const deleteItem = (elem, successCallback = () => {}, failCallback = () => {}) => {
+        // const deleteItem = (elem, successCallback = () => {}, failCallback = () => {}) => {
+        //     $.ajax({
+        //         url: elem.dataset.action,
+        //         type: 'DELETE',
+        //         success: function(response) {
+        //             if (response.success) {
+        //                 Swal.fire({
+        //                     icon: 'success',
+        //                     title: response.message,
+        //                     showConfirmButton: true,
+        //                 }).then(() => {
+        //                     $(elem).closest('div .datatable').KTDatatable().reload()
+        //                     successCallback()
+        //                 });
+        //             }
+        //         },
+        //         fail: (response) => {
+        //             Swal.fire(
+        //                 'Opps!',
+        //                 'An error occurred, we are sorry for inconvenience.',
+        //                 'danger'
+        //             )
+        //             failCallback()
+        //         }
+        //     })
+        // }
+
+        // const confirmDelete = (elem) => {
+        //     return Swal.fire({
+        //         title: 'Adakah anda pasti?',
+        //         text: 'Data akan dihapuskan!',
+        //         icon: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#fc0330',
+        //         cancelButtonColor: '#999',
+        //         confirmButtonText: 'Yes',
+        //         cancelButtonText: 'No',
+        //         reverseButtons: true
+        //     }).then(() => deleteItem(elem))
+        // }
+
+
+
+        // Jang Custom Script
+
+        // Function to delete data from the database
+        function deleteData(elem) {
+
             $.ajax({
-                url: elem.dataset.action,
+                url: elem.dataset.url,
                 type: 'DELETE',
-                success: function(response) {
-                    if (response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: response.message,
-                            showConfirmButton: true,
-                        }).then(() => {
-                            $(elem).closest('div .datatable').KTDatatable().reload()
-                            successCallback()
-                        });
-                    }
+                dataType: 'json',
+                success: function(data) {
+                    // If the deletion is successful, show a success message to the user
+                    // Swal.fire({
+                    //     title: 'Deleted!',
+                    //     text: 'Your data has been deleted.',
+                    //     icon: 'success'
+                    // });
+                    showSuccessToast(data.message, data.success);
+                    // Reload the datatable to show the updated data
+                    $('#department-table').DataTable().ajax.reload();
                 },
-                fail: (response) => {
-                    Swal.fire(
-                        'Opps!',
-                        'An error occurred, we are sorry for inconvenience.',
-                        'danger'
-                    )
-                    failCallback()
+                error: function(xhr, status, error) {
+                    // If the deletion fails, show an error message to the user
+                    // Swal.fire({
+                    //     title: 'Error!',
+                    //     text: 'An error occurred while deleting your data.',
+                    //     icon: 'error'
+                    // });
+                    showDangerToast(data.message, data.success);
                 }
-            })
+            });
+
+            // swal({
+            //     title: 'Are you sure?',
+            //     text: "You won't be able to revert this!",
+            //     icon: 'warning',
+            //     showCancelButton: true,
+            //     confirmButtonColor: '#3f51b5',
+            //     cancelButtonColor: '#ff4081',
+            //     confirmButtonText: 'Great ',
+            //     buttons: {
+            //         cancel: {
+            //             text: "Cancel",
+            //             value: null,
+            //             visible: true,
+            //             className: "btn btn-danger",
+            //             closeModal: true,
+            //         },
+            //         confirm: {
+            //             text: "OK",
+            //             value: true,
+            //             visible: true,
+            //             className: "btn btn-primary",
+            //             closeModal: true
+            //         }
+            //     }
+            // })
+
+            // // Show a confirmation dialog to the user
+            // Swal.fire({
+            //     title: 'Are you sure?',
+            //     text: 'You will not be able to recover this data!',
+            //     icon: 'warning',
+            //     showCancelButton: true,
+            //     confirmButtonColor: '#3085d6',
+            //     cancelButtonColor: '#d33',
+            //     confirmButtonText: 'Yes, delete it!'
+            // }).then((result) => {
+            //     if (result.isConfirmed) {
+            //         // If the user confirms the deletion, send an AJAX request to delete the data from the database
+            //         $.ajax({
+            //             url: elem.dataset.url,
+            //             type: 'DELETE',
+            //             dataType: 'json',
+            //             success: function(data) {
+            //                 // If the deletion is successful, show a success message to the user
+            //                 Swal.fire({
+            //                     title: 'Deleted!',
+            //                     text: 'Your data has been deleted.',
+            //                     icon: 'success'
+            //                 });
+            //                 // Reload the datatable to show the updated data
+            //                 $('#department-table').DataTable().ajax.reload();
+            //             },
+            //             error: function(xhr, status, error) {
+            //                 // If the deletion fails, show an error message to the user
+            //                 Swal.fire({
+            //                     title: 'Error!',
+            //                     text: 'An error occurred while deleting your data.',
+            //                     icon: 'error'
+            //                 });
+            //             }
+            //         });
+            //     }
+            // });
         }
 
-        const confirmDelete = (elem) => {
-            return Swal.fire({
-                title: 'Adakah anda pasti?',
-                text: 'Data akan dihapuskan!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#fc0330',
-                cancelButtonColor: '#999',
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                reverseButtons: true
-            }).then(() => deleteItem(elem))
-        }
+        // Bind the delete button in the datatable to the deleteData function
+        // $('#datatable').on('click', '.delete-btn', function() {
+        //     var id = $(this).data('id');
+        //     deleteData(id);
+        // });
+
+
+        // alert
+        @if (session('status') === 'success')
+            showSuccessToast("{{ session('message') }}");
+        @endif
+        @if (session('status') === 'info')
+            showInfoToast("{{ session('message') }}");
+        @endif
+        @if (session('status') === 'warning')
+            showWarningToast("{{ session('message') }}");
+        @endif
+        @if (session('status') === 'error')
+            showDangerToast("{{ session('message') }}");
+        @endif
     </script>
+
+    @stack('additional_js')
+
 </body>
 
 </html>

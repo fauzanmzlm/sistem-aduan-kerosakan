@@ -19,8 +19,10 @@ class UserController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $data = User::select('id','name','email')->get();
-            return DataTables::of($data)->addIndexColumn()->make(true);
+            $users = User::select('id','name','email')->get();
+            return DataTables::of($users)
+                ->addIndexColumn()
+                ->make(true);
         }
 
         $title = 'User Management';

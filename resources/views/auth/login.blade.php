@@ -1,88 +1,74 @@
 @extends('layouts.app')
 
+@section('title', 'Login')
+
 @section('content')
-    {{-- <div class="container position-sticky z-index-sticky top-0">
-        <div class="row">
-            <div class="col-12">
-                @include('layouts.navbars.guest.navbar')
-            </div>
-        </div>
-    </div> --}}
-    <main class="main-content  mt-0">
-        <section>
-            <div class="page-header min-vh-100">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
-                            <div class="card card-plain">
-                                <div class="card-header pb-0 text-start">
-                                    <h4 class="font-weight-bolder">Log Masuk</h4>
-                                    <p class="mb-0">Masukkan alamat emel dan kata laluan anda untuk log masuk</p>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="main-panel">
+                <div class="content-wrapper d-flex align-items-center auth px-0">
+                    <div class="row w-100 mx-0">
+                        <div class="col-lg-4 mx-auto">
+                            <div class="auth-form-light text-left py-5 px-4 px-sm-5 border">
+                                <div class="brand-logo">
+                                    <img src="{{ asset('yoraui/images/logo.svg') }}" alt="logo">
                                 </div>
-                                <div class="card-body">
-                                    <form role="form" method="POST" action="{{ route('login') }}">
-                                        @csrf
-                                        <div class="flex flex-col mb-3">
-                                            <input 
-                                                type="email" 
-                                                name="email" 
-                                                class="form-control form-control-lg @error('email') is-invalid @enderror" 
-                                                value="{{ old('email') }}" 
-                                                placeholder="Alamat Emel" 
-                                                aria-label="Email" 
-                                                required 
-                                                autocomplete="email" 
-                                                autofocus>
-                                            @error('email') <p class="text-danger text-xs pt-1"> {{$message}} </p>@enderror
+                                <h4>Hello! let's get started</h4>
+                                <h6 class="font-weight-light">Sign in to continue.</h6>
+                                <form class="pt-3" role="form" method="POST" action="{{ route('login') }}">
+                                    @csrf
+                                    <div class="form-group">
+                                        <input type="email" name="email"
+                                            class="form-control form-control-lg @error('email') is-invalid @enderror"
+                                            value="{{ old('email') }}" placeholder="Emel" aria-label="Email" required
+                                            autocomplete="email" autofocus>
+                                        @error('email')
+                                            <p class="text-danger text-xs pt-1"> {{ $message }} </p>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" name="password"
+                                            class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                            aria-label="Password" required placeholder="Kata Laluan"
+                                            autocomplete="current-password">
+                                        @error('password')
+                                            <p class="text-danger text-xs pt-1"> {{ $message }} </p>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+
+                                    </div>
+                                    <div class="mt-3">
+                                        <button type="submit"
+                                            class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">LOG
+                                            MASUK</button>
+                                    </div>
+                                    <div class="my-2 d-flex justify-content-between align-items-center">
+                                        <div class="form-check">
+                                            <label class="form-check-label text-muted">
+                                                <input class="form-check-input" name="remember" type="checkbox"
+                                                    {{ old('remember') ? 'checked' : '' }}>
+                                                Kekalkan Saya Log Masuk
+                                            </label>
                                         </div>
-                                        <div class="flex flex-col mb-3">
-                                            <input 
-                                                type="password" 
-                                                name="password" 
-                                                class="form-control form-control-lg @error('password') is-invalid @enderror" 
-                                                aria-label="Password"
-                                                required 
-                                                placeholder="Kata Laluan"
-                                                autocomplete="current-password">
-                                            @error('password') <p class="text-danger text-xs pt-1"> {{$message}} </p>@enderror
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" name="remember" type="checkbox" id="rememberMe" {{ old('remember') ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="rememberMe">Ingat Saya</label>
-                                        </div>
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Log Masuk</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                @if (Route::has('password.request'))
-                                <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                                    <p class="mb-1 text-sm mx-auto">
-                                        Lupa kata laluan anda? Tetapkan semula kata laluan anda
-                                        <a href="{{ route('password.request') }}" class="text-primary text-gradient font-weight-bold">disini</a>
-                                    </p>
-                                </div>
-                                @endif
-                                <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                                    <p class="mb-4 text-sm mx-auto">
-                                        Tiada akaun? <a href="{{ route('register') }}" class="text-primary text-gradient font-weight-bold">Daftar</a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-                            <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden"
-                                style="background-image: url('{{ asset("argon/img/pkt.jpg") }}');
-              background-size: cover;">
-                                <span class="mask bg-gradient-primary opacity-6"></span>
-                                <h4 class="mt-5 text-white font-weight-bolder position-relative">"Setiap hari merupakan peluang untuk kita perbaiki diri untuk menjadi lebih baik"</h4>
-                                <p class="text-white position-relative">- Anonymous -</p>
+                                        <a href="#" class="auth-link text-black">Lupa kata laluan?</a>
+                                    </div>
+                                    <div class="mb-2">
+                                        <button type="button" class="btn btn-block btn-facebook auth-form-btn">
+                                            <i class="mdi mdi-facebook mr-2"></i>Connect using facebook
+                                        </button>
+                                    </div>
+                                    <div class="text-center mt-4 font-weight-light">
+                                        Tidak mempunyai akaun? <a href="register.html" class="text-primary">Buat</a>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+            <!-- content-wrapper ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
 @endsection

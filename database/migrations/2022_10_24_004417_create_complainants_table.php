@@ -16,12 +16,6 @@ return new class extends Migration
         Schema::create('complainants', function (Blueprint $table) {
             $table->id();
             
-            $table->string('department_name');
-            $table->string('location');
-            $table->date('date');
-            $table->text('signature');
-            $table->string('name_of_signature');
-            $table->string('date_of_signature');
 
             $table->timestamps();
         });

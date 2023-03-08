@@ -54,6 +54,10 @@ return new class extends Migration
             // $table->text('signature');
             // $table->string('name_of_signature');
             // $table->string('date_of_signature');
+            // $table->boolean('damage_category_a')->default(false);
+            // $table->boolean('damage_category_b')->default(false);
+            // $table->boolean('damage_category_c')->default(false);
+            // $table->boolean('damage_category_d')->default(false);
 
             // // tindakan penolong jurutera - assistant engineer action
             // model : AssistantEngineerResponse
