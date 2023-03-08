@@ -11,12 +11,8 @@ class Department extends Model
     
     protected $guarded = [];
 
-    public const ACTIVE = [
-        'code' => 1,
-        'text' => 'active',
-    ];
-    public const INACTIVE = [
-        'code' => 0,
-        'text' => 'inactive',
+    public const STATUS = [
+        1 => 'Active',
+        0 => 'Inactive',
     ];
 }

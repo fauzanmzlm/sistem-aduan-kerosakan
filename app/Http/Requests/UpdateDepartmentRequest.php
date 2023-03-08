@@ -24,9 +24,10 @@ class UpdateDepartmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:departments,name',
-            'short_name' => 'required|unique:departments,short_name',
-            'code' => 'required|unique:departments,code',
+            'name' => 'required|unique:departments,name,' . $this->department->id,
+            'short_name' => 'required|unique:departments,short_name,' . $this->department->id,
+            'code' => 'required|unique:departments,code,' . $this->department->id,
+            'status' => 'required'
         ];
     }
 }

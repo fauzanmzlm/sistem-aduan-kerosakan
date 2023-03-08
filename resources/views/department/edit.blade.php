@@ -19,7 +19,7 @@
                                 @include('department.fields', [
                                     'action' => 'edit'
                                 ])
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                @include('components.update-button')
                             </form>
                         </div>
                     </div>

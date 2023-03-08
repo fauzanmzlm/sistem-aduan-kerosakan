@@ -18,7 +18,7 @@
                                 @include('department.fields', [
                                     'action' => 'create'
                                 ])
-                                <button type="submit" class="btn btn-success btn-sm">Create</button>
+                                @include('components.create-button')
                             </form>
                         </div>
                     </div>

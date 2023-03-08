@@ -27,6 +27,15 @@
         'value' => $department->code ?? '',
         'required' => true,
     ])
+    
+    @include('components.input', [
+        'type' => 'select',
+        'name' => 'status',
+        'label' => 'Status',
+        'value' => $department->status ?? '',
+        'required' => true,
+        'options' => $statusOptions
+    ])
 
 @else
 

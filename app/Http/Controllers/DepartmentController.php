@@ -43,9 +43,9 @@ class DepartmentController extends Controller
                 $searchValue = $request->input('search.value');
                 if ($searchValue) {
                     $status = null;
-                    if ($searchValue == Department::ACTIVE['text']) {
+                    if ($searchValue == "active") {
                         $status = 1;
-                    } else if ($searchValue == Department::INACTIVE['text']) {
+                    } else if ($searchValue == "inactive") {
                         $status = 0;
                     }
 
@@ -196,10 +196,13 @@ class DepartmentController extends Controller
         $pageTitle = "Edit Department";
         $pageDescription = "This page allows users to edit department details.";
 
+        $statusOptions = Department::STATUS;
+
         return view('department.edit', [
             'pageTitle' => $pageTitle,
             'pageDescription' => $pageDescription,
-            'department' => $department
+            'department' => $department,
+            'statusOptions' => $statusOptions
         ]);
     }
 
@@ -212,7 +215,42 @@ class DepartmentController extends Controller
      */
     public function update(UpdateDepartmentRequest $request, Department $department)
     {
-        //
+        $status = $request->input('status');
+
+        if (!isValidData($status, Department::STATUS)) {
+            return back()->with([
+                'status' => 'error',
+                'message' => 'Something went wrong!'
+            ], 200);
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+            $department->name = $request->name;
+            $department->slug = Str::slug($request->name);
+            $department->short_name = $request->short_name;
+            $department->code = $request->code;
+            $department->status = $request->code;
+            $department->save();
+
+            DB::commit();
+
+            return back()->with([
+                'status' => 'success',
+                'message' => 'Data updated successfully'
+            ], 200);
+
+        } catch(\Exception $e) {
+
+            DB::rollback();
+
+            return back()->with([
+                'status' => 'error',
+                'message' => 'Failed to update data: ' . $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
