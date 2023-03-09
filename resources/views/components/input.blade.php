@@ -19,7 +19,8 @@
         <select class="form-control text-capitalize @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}"{{ isset($required) && $required ? ' required' : '' }}>
             <option value="">-- Select --</option>
             @foreach ($options as $optionValue => $optionLabel)
-                <option value="{{ $optionValue }}"{{ old($name) == $optionValue || $value == $optionValue ? ' selected' : '' }}>{{ $optionLabel }}</option>
+                {{-- <option value="{{ $optionValue }}" {{ old($name) == $optionValue || $value == $optionValue ? ' selected' : '' }}>{{ $optionLabel }}</option> --}}
+                <option value="{{ $optionValue }}" {{ old($name, $value) == $optionValue ? 'selected' : '' }}>{{ $optionLabel }}</option>
             @endforeach
         </select>
     @endif

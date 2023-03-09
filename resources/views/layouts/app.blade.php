@@ -361,104 +361,22 @@
 
         // Function to delete data from the database
         function deleteData(elem) {
-
-            $.ajax({
-                url: elem.dataset.url,
-                type: 'DELETE',
-                dataType: 'json',
-                success: function(data) {
-                    // If the deletion is successful, show a success message to the user
-                    // Swal.fire({
-                    //     title: 'Deleted!',
-                    //     text: 'Your data has been deleted.',
-                    //     icon: 'success'
-                    // });
-                    showSuccessToast(data.message, data.success);
-                    // Reload the datatable to show the updated data
-                    $('#department-table').DataTable().ajax.reload();
-                },
-                error: function(xhr, status, error) {
-                    // If the deletion fails, show an error message to the user
-                    // Swal.fire({
-                    //     title: 'Error!',
-                    //     text: 'An error occurred while deleting your data.',
-                    //     icon: 'error'
-                    // });
-                    showDangerToast(data.message, data.success);
-                }
-            });
-
-            // swal({
-            //     title: 'Are you sure?',
-            //     text: "You won't be able to revert this!",
-            //     icon: 'warning',
-            //     showCancelButton: true,
-            //     confirmButtonColor: '#3f51b5',
-            //     cancelButtonColor: '#ff4081',
-            //     confirmButtonText: 'Great ',
-            //     buttons: {
-            //         cancel: {
-            //             text: "Cancel",
-            //             value: null,
-            //             visible: true,
-            //             className: "btn btn-danger",
-            //             closeModal: true,
-            //         },
-            //         confirm: {
-            //             text: "OK",
-            //             value: true,
-            //             visible: true,
-            //             className: "btn btn-primary",
-            //             closeModal: true
-            //         }
-            //     }
-            // })
-
-            // // Show a confirmation dialog to the user
-            // Swal.fire({
-            //     title: 'Are you sure?',
-            //     text: 'You will not be able to recover this data!',
-            //     icon: 'warning',
-            //     showCancelButton: true,
-            //     confirmButtonColor: '#3085d6',
-            //     cancelButtonColor: '#d33',
-            //     confirmButtonText: 'Yes, delete it!'
-            // }).then((result) => {
-            //     if (result.isConfirmed) {
-            //         // If the user confirms the deletion, send an AJAX request to delete the data from the database
-            //         $.ajax({
-            //             url: elem.dataset.url,
-            //             type: 'DELETE',
-            //             dataType: 'json',
-            //             success: function(data) {
-            //                 // If the deletion is successful, show a success message to the user
-            //                 Swal.fire({
-            //                     title: 'Deleted!',
-            //                     text: 'Your data has been deleted.',
-            //                     icon: 'success'
-            //                 });
-            //                 // Reload the datatable to show the updated data
-            //                 $('#department-table').DataTable().ajax.reload();
-            //             },
-            //             error: function(xhr, status, error) {
-            //                 // If the deletion fails, show an error message to the user
-            //                 Swal.fire({
-            //                     title: 'Error!',
-            //                     text: 'An error occurred while deleting your data.',
-            //                     icon: 'error'
-            //                 });
-            //             }
-            //         });
-            //     }
-            // });
+            if (confirm('Are you sure you want to delete this item?')) {
+                $.ajax({
+                    url: elem.dataset.url,
+                    type: 'DELETE',
+                    dataType: 'json',
+                    success: function(data) {
+                        showSuccessToast(data.message, data.success);
+                        // Reload the datatable to show the updated data
+                        $(elem.closest('table')).DataTable().ajax.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        showDangerToast(data.message, data.success);
+                    }
+                });
+            }
         }
-
-        // Bind the delete button in the datatable to the deleteData function
-        // $('#datatable').on('click', '.delete-btn', function() {
-        //     var id = $(this).data('id');
-        //     deleteData(id);
-        // });
-
 
         // alert
         @if (session('status') === 'success')

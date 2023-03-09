@@ -215,15 +215,6 @@ class DepartmentController extends Controller
      */
     public function update(UpdateDepartmentRequest $request, Department $department)
     {
-        $status = $request->input('status');
-
-        if (!isValidData($status, Department::STATUS)) {
-            return back()->with([
-                'status' => 'error',
-                'message' => 'Something went wrong!'
-            ], 200);
-        }
-
         DB::beginTransaction();
 
         try {
@@ -232,7 +223,7 @@ class DepartmentController extends Controller
             $department->slug = Str::slug($request->name);
             $department->short_name = $request->short_name;
             $department->code = $request->code;
-            $department->status = $request->code;
+            $department->status = $request->status;
             $department->save();
 
             DB::commit();
