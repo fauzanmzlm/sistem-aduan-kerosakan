@@ -68,10 +68,6 @@ class DepartmentController extends Controller
                 
                 // Add custom column to DataTables JSON response
                 collect($data->items())->map(function ($row) {
-                    // edit route
-                    $editRoute = route('departments.edit', $row->id);
-                    // delete route
-                    $deleteRoute = route('departments.destroy', $row->id);
 
                     // check status
                     if ($row->status == 1) {
@@ -85,16 +81,15 @@ class DepartmentController extends Controller
                     // add status column
                     $row->status = $status;
 
+                    $editButton = view('components.edit-button', [
+                        'route' => route('departments.edit', $row->id)
+                    ])->render();
+                    $deleteButton = view('components.delete-button', [
+                        'route' => route('departments.edit', $row->id)
+                    ])->render();
+                    
                     // add action column
-                    $row->action = '
-                        <a href="'. $editRoute .'" class="btn btn-outline-info btn-icon-text">
-                            <i class="mdi mdi-pencil btn-icon-prepend"></i>
-                            Edit
-                        </a>
-                        <button type="button" class="btn btn-outline-danger btn-icon-text" onclick="deleteData(this)" data-url="'. $deleteRoute .'">
-                            <i class="mdi mdi-delete btn-icon-prepend"></i>
-                            Delete
-                        </button>';
+                    $row->action = $editButton . $deleteButton;
 
                     return $row;
                 });
@@ -112,7 +107,7 @@ class DepartmentController extends Controller
             return response()->json($data);
         }
 
-        $pageTitle = "Manage Department";
+        $pageTitle = "Manage Departments";
         $pageDescription = "This page allows users to modify department details, including name, code and others. Users can add, update, or delete departments.";
 
         return view('department.index', [

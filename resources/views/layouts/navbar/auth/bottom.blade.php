@@ -127,7 +127,7 @@
                             <p class="category-heading">Access Control</p>
                             <ul class="submenu-item">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="pages/maps/vector-map.html">Manage Permissions</a>
+                                    <a class="nav-link" href="{{ route('admin.permissions.index') }}">Manage Permissions</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="pages/maps/google-maps.html">Manage Roles</a>
