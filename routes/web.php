@@ -67,6 +67,9 @@ Route::resource('users', UserController::class);
 //permissions
 Route::resource('/permissions', App\Http\Controllers\Admin\PermissionController::class, ['except' => ['show', 'create', 'edit', 'update', 'delete'] ,'as' => 'admin']);
 
+//roles
+Route::resource('/roles', App\Http\Controllers\Admin\RoleController::class, ['except' => ['show'] ,'as' => 'admin']);
+
 Route::get('account', function() {
     $title = "My Account";
     return view('account.index', ['title' => $title]);

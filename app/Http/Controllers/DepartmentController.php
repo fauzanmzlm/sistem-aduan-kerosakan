@@ -85,7 +85,7 @@ class DepartmentController extends Controller
                         'route' => route('departments.edit', $row->id)
                     ])->render();
                     $deleteButton = view('components.delete-button', [
-                        'route' => route('departments.edit', $row->id)
+                        'route' => route('departments.destroy', $row->id)
                     ])->render();
                     
                     // add action column

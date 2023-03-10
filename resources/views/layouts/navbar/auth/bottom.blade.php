@@ -130,7 +130,7 @@
                                     <a class="nav-link" href="{{ route('admin.permissions.index') }}">Manage Permissions</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="pages/maps/google-maps.html">Manage Roles</a>
+                                    <a class="nav-link" href="{{ route('admin.roles.index') }}">Manage Roles</a>
                                 </li>
                             </ul>
                         </div>

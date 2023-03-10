@@ -25,15 +25,6 @@ class PermissionController extends Controller
      *
      * @return void
      */
-    // public function index()
-    // {
-    //     $permissions = Permission::latest()->when(request()->q, function($permissions) {
-    //         $permissions = $permissions->where('name', 'like', '%'. request()->q . '%');
-    //     })->paginate(5);
-
-    //     return view('admin.permission.index', compact('permissions'));
-    // }
-
     public function index(Request $request)
     {
         if ($request->ajax()) {
