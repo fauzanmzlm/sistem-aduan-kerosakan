@@ -62,12 +62,13 @@ Route::prefix('complaint')->group(function () {
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resource('users', UserController::class);
+// Users
+Route::resource('/users', App\Http\Controllers\Admin\UserController::class, ['as' => 'admin']);
 
-//permissions
+// Permissions
 Route::resource('/permissions', App\Http\Controllers\Admin\PermissionController::class, ['except' => ['show', 'create', 'edit', 'update', 'delete'] ,'as' => 'admin']);
 
-//roles
+// Roles
 Route::resource('/roles', App\Http\Controllers\Admin\RoleController::class, ['except' => ['show'] ,'as' => 'admin']);
 
 Route::get('account', function() {

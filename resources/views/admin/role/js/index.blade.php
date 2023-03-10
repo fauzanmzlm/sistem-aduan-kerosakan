@@ -31,14 +31,7 @@
                     orderable: false,
                     searchable: false
                 },
-            ],
-            // columnDefs: [
-            //     { 
-            //         width: 300, 
-            //         targets: 2 
-            //     }
-            // ],
-            // fixedColumns: true
+            ]
         });
     });
 </script>

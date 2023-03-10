@@ -107,7 +107,7 @@
                             <p class="category-heading">#</p>
                             <ul class="submenu-item">
                                 <li class="nav-item"><a class="nav-link" href="{{ route('departments.index') }}">Manage Departments</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{{ route('users.index') }}">Manage Users</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{ route('admin.users.index') }}">Manage Users</a></li>
                                 <li class="nav-item"><a class="nav-link" href="pages/charts/chartjs.html">Manage Complaints</a></li>
                             </ul>
                         </div>
