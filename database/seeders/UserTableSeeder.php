@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -20,8 +21,10 @@ class UserTableSeeder extends Seeder
         //create data user
         $userCreate = User::create([
             'name'      => 'Muhammad Fauzan',
+            'username'      => 'fauzanmzlm',
             'email'     => 'admin@gmail.com',
-            'password'  => bcrypt('123')
+            'password'  => bcrypt('123'),
+            'account_status_id' => 2,
         ]);
 
         //assign permission to role
@@ -33,5 +36,19 @@ class UserTableSeeder extends Seeder
         //assign role with permission to user
         $user = User::find(1);
         $user->assignRole($role->name);
+
+
+        // Add code to seed the users table
+        for ($i = 1; $i <= 10000; $i++) {
+            DB::table('users')->insert([
+                'name' => 'User '.$i,
+                'username' => 'Username '. $i,
+                'email' => 'user'.$i.'@example.com',
+                'password' => bcrypt('123'),
+                'created_at' => now(),
+                'updated_at' => now(),
+                'account_status_id' => 2,
+            ]);
+        }
     }
 }

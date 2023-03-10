@@ -43,6 +43,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function accountStatus() {
+        return $this->belongsTo(AccountStatus::class);
+    }
+
     public function complaints() {
         return $this->hasMany(Complaint::class);
     }

@@ -22,6 +22,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
+                                            <th>Username</th>
                                             <th>Email Address</th>
                                             <th>Role</th>
                                             <th>Status</th>

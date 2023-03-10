@@ -88,7 +88,7 @@ class DepartmentController extends Controller
                         'route' => route('departments.destroy', $row->id)
                     ])->render();
                     
-                    // add action column
+                    // Add column action
                     $row->action = $editButton . $deleteButton;
 
                     return $row;

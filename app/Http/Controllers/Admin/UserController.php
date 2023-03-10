@@ -41,12 +41,25 @@ class UserController extends Controller
 
             $data = Cache::remember($cacheKey, $cacheTime, function () use ($request) {
                 $query = DB::table('users')
-                    ->select('id', 'name', 'email', 'created_at', 'updated_at');
+                    ->join('account_statuses', 'users.account_status_id', '=', 'account_statuses.id')
+                    ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                    ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                    ->selectRaw('users.id, users.name, users.username, users.email, users.account_status_id, users.created_at, users.updated_at, account_statuses.name AS account_status_name, account_statuses.code AS account_status_code, account_statuses.colour AS account_status_colour, GROUP_CONCAT(DISTINCT roles.name SEPARATOR ",") AS role_names')
+                    ->groupBy('users.id');
+
 
                 // Apply sorting
                 $sortColumn = $request->input('order.0.column');
                 $sortDirection = $request->input('order.0.dir');
-                $columns = ['name','email','created_at','updated_at'];
+                $columns = [
+                    'users.name',
+                    'users.username',
+                    'users.email',
+                    'users.created_at',
+                    'users.updated_at',
+                    'account_statuses.name',
+                    'roles.name'
+                ];
                 $column = $columns[$sortColumn];
                 $query->orderBy($column, $sortDirection);
 
@@ -54,10 +67,13 @@ class UserController extends Controller
                 $searchValue = $request->input('search.value');
                 if ($searchValue) {
                     $query->where(function ($query) use ($searchValue) {
-                        $query->where('name', 'like', "%{$searchValue}%")
-                            ->orWhere('email', 'like', "%{$searchValue}%")
-                            ->orWhere('created_at', 'like', "%{$searchValue}%")
-                            ->orWhere('updated_at', 'like', "%{$searchValue}%");
+                        $query->where('users.name', 'like', "%{$searchValue}%")
+                            ->orWhere('users.username', 'like', "%{$searchValue}%")
+                            ->orWhere('users.email', 'like', "%{$searchValue}%")
+                            ->orWhere('users.created_at', 'like', "%{$searchValue}%")
+                            ->orWhere('users.updated_at', 'like', "%{$searchValue}%")
+                            ->orWhere('account_statuses.name', 'like', "%{$searchValue}%")
+                            ->orWhere('roles.name', 'like', "%{$searchValue}%");
                     });
                 }
 
@@ -71,31 +87,16 @@ class UserController extends Controller
                 // Add custom column to DataTables JSON response
                 collect($data->items())->map(function ($row) {
 
-                    // // Get all permissions that beongs to the role
-                    // $permissions = DB::table('permissions')
-                    //     ->join('role_has_permissions', 'permissions.id', '=', 'role_has_permissions.permission_id')
-                    //     ->where('role_has_permissions.role_id', '=', $row->id)
-                    //     ->select('permissions.*')
-                    //     ->get();
-                    
-                    // // Add permissions column
-                    // $row->permissions = "";
-                    // $row->permissions .= '<div class="d-flex flex-wrap">';
-                    // foreach ($permissions as $permission) {
-                    //     $row->permissions .= '<label class="badge badge-success mb-1 mt-1 mr-1">'. $permission->name .'</label>';
-                    // }
-                    // $row->permissions .= '</div>';
-
                     // Add role column
                     $row->role = "";
                     $row->role .= '<div class="d-flex flex-wrap">';
-                    $row->role .= '<label class="badge badge-success mb-1 mt-1 mr-1">Admin</label>';
-                    // foreach ($permissions as $permission) {
-                    //     $row->permissions .= '<label class="badge badge-success mb-1 mt-1 mr-1">'. $permission->name .'</label>';
-                    // }
+                    foreach(explode(',', $row->role_names) as $role) {
+                        $row->role .= '<label class="badge badge-success mb-1 mt-1 mr-1">'. $role .'</label>';
+                    }
                     $row->role .= '</div>';
                     
-                    $row->status = '<label class="badge badge-success">Active</label>';
+                    // Add column account status
+                    $row->account_status = '<label class="badge badge-'. $row->account_status_colour .'">'. $row->account_status_name .'</label>';
                     
                     // Get action button HTML
                     $editButton = view('components.edit-button', [
@@ -105,7 +106,7 @@ class UserController extends Controller
                         'route' => route('admin.users.destroy', $row->id)
                     ])->render();
                     
-                    // Add action column
+                    // Add column action
                     $row->action = $editButton . $deleteButton;
 
                     return $row;
