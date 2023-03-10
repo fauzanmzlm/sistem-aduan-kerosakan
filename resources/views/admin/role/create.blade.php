@@ -13,7 +13,7 @@
                     <p class="card-description">{{ $pageDescription ?? '' }}</p>
                     <div class="row">
                         <div class="col-12">
-                            <form method="POST" action="{{ route('admin.roles.store') }}">
+                            <form method="POST" action="{{ route('admin.roles.store') }}" enctype="multipart/form-data">
                                 @csrf
                                 @include('admin.role.fields', [
                                     'action' => 'create'

@@ -391,6 +391,16 @@
         @if (session('status') === 'error')
             showDangerToast("{{ session('message') }}");
         @endif
+
+
+        $(document).ready(function() {
+            // Bind click event to all reset buttons
+            $('button[type="reset"]').click(function() {
+                var form = $(this).closest('form');
+                form.find(':input').val('');
+                form.find(':checkbox').prop('checked', false);
+            });
+        });
     </script>
 
     @stack('additional_js')

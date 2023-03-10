@@ -13,10 +13,10 @@
                     <p class="card-description">{{ $pageDescription ?? '' }}</p>
                     <div class="row">
                         <div class="col-12">
-                            <form method="POST" action="{{ route('departments.update', $department->id) }}">
+                            <form method="POST" action="{{ route('admin.roles.update', $role->id) }}" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
-                                @include('department.fields', [
+                                @include('admin.role.fields', [
                                     'action' => 'edit'
                                 ])
                                 @include('components.update-button')
@@ -28,7 +28,3 @@
         </div>
     </div>
 @endsection
-
-@push('additional_js')
-    @include('department.js.edit')
-@endpush

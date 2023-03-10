@@ -21,7 +21,9 @@
                 },
                 {
                     data: 'permissions',
-                    name: 'permissions'
+                    name: 'permissions',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'action',

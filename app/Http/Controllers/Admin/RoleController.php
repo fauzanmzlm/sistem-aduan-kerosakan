@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
@@ -22,6 +26,7 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -75,7 +80,7 @@ class RoleController extends Controller
                     $row->permissions = "";
                     $row->permissions .= '<div class="d-flex flex-wrap">';
                     foreach ($permissions as $permission) {
-                        $row->permissions .= '<label class="badge badge-primary mb-1 mt-1 mr-1">'. $permission->name .'</label>';
+                        $row->permissions .= '<label class="badge badge-success mb-1 mt-1 mr-1">'. $permission->name .'</label>';
                     }
                     $row->permissions .= '</div>';
 
@@ -125,54 +130,140 @@ class RoleController extends Controller
         $pageTitle = "Create Role";
         $pageDescription = "This page allows users to create role.";
 
+        $permissions = Permission::latest()->get();
+
         return view('admin.role.create', [
             'pageTitle' => $pageTitle,
-            'pageDescription' => $pageDescription
+            'pageDescription' => $pageDescription,
+            'permissions' => $permissions
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreRoleRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+
+            // Store role
+            $role = Role::create([
+                'name' => $request->input('name')
+            ]);
+
+            // Assign permission to role
+            $role->syncPermissions($request->input('permissions'));
+
+            DB::commit();
+
+            return redirect()->route('admin.roles.index')->with([
+                'status' => 'success',
+                'message' => 'Data added successfully'
+            ], 200);
+
+        } catch(\Exception $e) {
+
+            DB::rollback();
+
+            return back()->with([
+                'status' => 'error',
+                'message' => 'Failed to add data: ' . $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \Spatie\Permission\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
-        //
+        $pageTitle = "Edit Role";
+        $pageDescription = "This page allows users to edit role details.";
+
+        $permissions = Permission::latest()->get();
+
+        return view('admin.role.edit', [
+            'pageTitle' => $pageTitle,
+            'pageDescription' => $pageDescription,
+            'role' => $role,
+            'permissions' => $permissions
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\UpdateRoleRequest  $request
+     * @param  \Spatie\Permission\Models\Role        $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+
+            // update data
+            $role->name = $request->name;
+            $role->save();
+
+            //assign permission to role
+            $role->syncPermissions($request->input('permissions'));
+
+            DB::commit();
+
+            return redirect()->route('admin.roles.index')->with([
+                'status' => 'success',
+                'message' => 'Data updated successfully'
+            ], 200);
+
+        } catch(\Exception $e) {
+
+            DB::rollback();
+
+            return back()->with([
+                'status' => 'error',
+                'message' => 'Failed to update data: ' . $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Spatie\Permission\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $permissions = $role->permissions;
+            $role->revokePermissionTo($permissions);
+            $role->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data deleted successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to delete data: ' . $e->getMessage()
+            ], 400);
+        }
     }
 }
