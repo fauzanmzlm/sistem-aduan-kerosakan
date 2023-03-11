@@ -31,6 +31,13 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+         // $query = DB::table('users')
+                //     ->join('account_statuses', 'users.account_status_id', '=', 'account_statuses.id')
+                //     ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                //     ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                //     ->selectRaw('users.id, users.name, users.username, users.email, users.account_status_id, users.created_at, users.updated_at, account_statuses.name AS account_status_name, account_statuses.code AS account_status_code, account_statuses.colour AS account_status_colour, GROUP_CONCAT(DISTINCT roles.name SEPARATOR ",") AS role_names')
+                //     ->groupBy('users.id');
+
         if ($request->ajax()) {
 
             // Generate a unique cache key based on the request parameters
@@ -40,25 +47,29 @@ class UserController extends Controller
             $cacheTime = 60;
 
             $data = Cache::remember($cacheKey, $cacheTime, function () use ($request) {
+               
+                // Query
                 $query = DB::table('users')
-                    ->join('account_statuses', 'users.account_status_id', '=', 'account_statuses.id')
-                    ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-                    ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-                    ->selectRaw('users.id, users.name, users.username, users.email, users.account_status_id, users.created_at, users.updated_at, account_statuses.name AS account_status_name, account_statuses.code AS account_status_code, account_statuses.colour AS account_status_colour, GROUP_CONCAT(DISTINCT roles.name SEPARATOR ",") AS role_names')
-                    ->groupBy('users.id');
-
-
+                    ->select('id', 'name', 'username', 'email', 'account_status_id', 'created_at', 'updated_at');
+                
                 // Apply sorting
                 $sortColumn = $request->input('order.0.column');
                 $sortDirection = $request->input('order.0.dir');
+                // $columns = [
+                //     'users.name',
+                //     'users.username',
+                //     'users.email',
+                //     'users.created_at',
+                //     'users.updated_at',
+                //     'account_statuses.name',
+                //     'roles.name'
+                // ];
                 $columns = [
-                    'users.name',
-                    'users.username',
-                    'users.email',
-                    'users.created_at',
-                    'users.updated_at',
-                    'account_statuses.name',
-                    'roles.name'
+                    'name',
+                    'username',
+                    'email',
+                    'created_at',
+                    'updated_at',
                 ];
                 $column = $columns[$sortColumn];
                 $query->orderBy($column, $sortDirection);
@@ -67,13 +78,18 @@ class UserController extends Controller
                 $searchValue = $request->input('search.value');
                 if ($searchValue) {
                     $query->where(function ($query) use ($searchValue) {
-                        $query->where('users.name', 'like', "%{$searchValue}%")
-                            ->orWhere('users.username', 'like', "%{$searchValue}%")
-                            ->orWhere('users.email', 'like', "%{$searchValue}%")
-                            ->orWhere('users.created_at', 'like', "%{$searchValue}%")
-                            ->orWhere('users.updated_at', 'like', "%{$searchValue}%")
-                            ->orWhere('account_statuses.name', 'like', "%{$searchValue}%")
-                            ->orWhere('roles.name', 'like', "%{$searchValue}%");
+                        // $query->where('users.name', 'like', "%{$searchValue}%")
+                        //     ->orWhere('users.username', 'like', "%{$searchValue}%")
+                        //     ->orWhere('users.email', 'like', "%{$searchValue}%")
+                        //     ->orWhere('users.created_at', 'like', "%{$searchValue}%")
+                        //     ->orWhere('users.updated_at', 'like', "%{$searchValue}%")
+                        //     ->orWhere('account_statuses.name', 'like', "%{$searchValue}%")
+                        //     ->orWhere('roles.name', 'like', "%{$searchValue}%");
+                        $query->where('name', 'like', "%{$searchValue}%")
+                            ->orWhere('username', 'like', "%{$searchValue}%")
+                            ->orWhere('email', 'like', "%{$searchValue}%")
+                            ->orWhere('created_at', 'like', "%{$searchValue}%")
+                            ->orWhere('updated_at', 'like', "%{$searchValue}%");
                     });
                 }
 
@@ -89,14 +105,15 @@ class UserController extends Controller
 
                     // Add role column
                     $row->role = "";
-                    $row->role .= '<div class="d-flex flex-wrap">';
-                    foreach(explode(',', $row->role_names) as $role) {
-                        $row->role .= '<label class="badge badge-success mb-1 mt-1 mr-1">'. $role .'</label>';
-                    }
-                    $row->role .= '</div>';
+                    // $row->role .= '<div class="d-flex flex-wrap">';
+                    // foreach(explode(',', $row->role_names) as $role) {
+                    //     $row->role .= '<label class="badge badge-success mb-1 mt-1 mr-1">'. $role .'</label>';
+                    // }
+                    // $row->role .= '</div>';
                     
                     // Add column account status
-                    $row->account_status = '<label class="badge badge-'. $row->account_status_colour .'">'. $row->account_status_name .'</label>';
+                    $row->account_status = "";
+                    // $row->account_status = '<label class="badge badge-'. $row->account_status_colour .'">'. $row->account_status_name .'</label>';
                     
                     // Get action button HTML
                     $editButton = view('components.edit-button', [

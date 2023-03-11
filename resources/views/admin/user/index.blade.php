@@ -20,7 +20,7 @@
                                 <table data-url="{{ route('admin.users.index') }}" id="user-table" class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+                                            {{-- <th>#</th> --}}
                                             <th>Name</th>
                                             <th>Username</th>
                                             <th>Email Address</th>
