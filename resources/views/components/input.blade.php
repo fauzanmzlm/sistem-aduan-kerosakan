@@ -1,3 +1,9 @@
+@php
+    if (!isset($value)) {
+        $value = '';
+    }
+@endphp
+
 <div class="form-group">
     <label for="{{ $name }}">{{ $label }}</label>
     @if ($type == 'text')

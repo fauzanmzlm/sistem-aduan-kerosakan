@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{ asset('yoraui/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
     <link rel="stylesheet" href="{{ asset('yoraui/vendors/jquery-toast-plugin/jquery.toast.min.css') }}">
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.min.css"> --}}
+    @stack('plugin_css')
     <!-- End plugin css for this page -->
 
 
@@ -125,7 +126,7 @@
     <script src="{{ asset('yoraui/vendors/datatables.net/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('yoraui/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
     <script src="{{ asset('yoraui/vendors/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
-
+    @stack('plugin_js')        
     <!-- End plugin js for this page-->
     <!-- inject:js -->
     <script src="{{ asset('yoraui/js/off-canvas.js') }}"></script>
@@ -401,6 +402,8 @@
                 form.find(':checkbox').prop('checked', false);
             });
         });
+
+        $(".select2").select2();
     </script>
 
     @stack('additional_js')

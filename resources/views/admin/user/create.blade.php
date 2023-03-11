@@ -4,6 +4,11 @@
     {{ $pageTitle ?? '' }}
 @endsection
 
+@push('plugin_css')
+    <link rel="stylesheet" href="{{ asset('yoraui/vendors/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('yoraui/vendors/select2-bootstrap-theme/select2-bootstrap.min.css') }}">
+@endpush
+
 @section('content')
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
@@ -13,10 +18,10 @@
                     <p class="card-description">{{ $pageDescription ?? '' }}</p>
                     <div class="row">
                         <div class="col-12">
-                            <form method="POST" action="{{ route('admin.roles.store') }}" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('admin.users.store') }}" enctype="multipart/form-data">
                                 @csrf
-                                @include('admin.role.fields', [
-                                    'action' => 'create'
+                                @include('admin.user.fields', [
+                                    'action' => 'create',
                                 ])
                                 @include('components.create-button')
                             </form>
@@ -28,3 +33,7 @@
     </div>
 @endsection
 
+@push('plugin_js')
+    <script src="{{ asset('yoraui/vendors/typeahead.js/typeahead.bundle.min.js') }}"></script>
+    <script src="{{ asset('yoraui/vendors/select2/select2.min.js') }}"></script>
+@endpush

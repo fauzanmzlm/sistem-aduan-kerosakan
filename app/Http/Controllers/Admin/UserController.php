@@ -158,15 +158,15 @@ class UserController extends Controller
      */
     public function create()
     {
-        $pageTitle = "Create Role";
-        $pageDescription = "This page allows users to create role.";
+        $pageTitle = "Create User";
+        $pageDescription = "This page allows users to create user.";
 
-        $permissions = Permission::latest()->get();
+        $roles = Role::latest()->get();
 
-        return view('admin.role.create', [
+        return view('admin.user.create', [
             'pageTitle' => $pageTitle,
             'pageDescription' => $pageDescription,
-            'permissions' => $permissions
+            'roles' => $roles
         ]);
     }
 
