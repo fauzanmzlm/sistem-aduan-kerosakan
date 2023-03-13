@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -182,17 +183,13 @@ class UserController extends Controller
 
         try {
 
-            // Store role
-            $role = Role::create([
+            $user = User::create([
                 'name' => $request->input('name')
             ]);
 
-            // Assign permission to role
-            $role->syncPermissions($request->input('permissions'));
-
             DB::commit();
 
-            return redirect()->route('admin.roles.index')->with([
+            return redirect()->route('admin.users.index')->with([
                 'status' => 'success',
                 'message' => 'Data added successfully'
             ], 200);
@@ -211,21 +208,21 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit(User $user)
     {
-        $pageTitle = "Edit Role";
-        $pageDescription = "This page allows users to edit role details.";
+        $pageTitle = "Edit User";
+        $pageDescription = "This page allows users to edit user details.";
 
-        $permissions = Permission::latest()->get();
+        $roles = Role::latest()->get();
 
         return view('admin.role.edit', [
             'pageTitle' => $pageTitle,
             'pageDescription' => $pageDescription,
-            'role' => $role,
-            'permissions' => $permissions
+            'user' => $user,
+            'roles' => $roles
         ]);
     }
 
@@ -233,25 +230,22 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateUserRequest  $request
-     * @param  \Spatie\Permission\Models\Role        $role
+     * @param  \App\Models\User                      $user
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, Role $role)
+    public function update(UpdateUserRequest $request, User $user)
     {
         DB::beginTransaction();
 
         try {
 
             // update data
-            $role->name = $request->name;
-            $role->save();
-
-            //assign permission to role
-            $role->syncPermissions($request->input('permissions'));
+            $user->name = $request->name;
+            $user->save();
 
             DB::commit();
 
-            return redirect()->route('admin.roles.index')->with([
+            return redirect()->route('admin.users.index')->with([
                 'status' => 'success',
                 'message' => 'Data updated successfully'
             ], 200);
@@ -270,17 +264,16 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\User $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy(User $user)
     {
         DB::beginTransaction();
 
         try {
-            $permissions = $role->permissions;
-            $role->revokePermissionTo($permissions);
-            $role->delete();
+            
+            $user->delete();
 
             DB::commit();
 
