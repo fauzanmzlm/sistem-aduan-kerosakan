@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -163,11 +164,13 @@ class UserController extends Controller
         $pageDescription = "This page allows users to create user.";
 
         $roles = Role::latest()->get();
+        $departmentOptions = Department::pluck('name', 'id')->all();
 
         return view('admin.user.create', [
             'pageTitle' => $pageTitle,
             'pageDescription' => $pageDescription,
-            'roles' => $roles
+            'roles' => $roles,
+            'departmentOptions' => $departmentOptions
         ]);
     }
 
