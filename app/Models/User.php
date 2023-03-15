@@ -50,4 +50,8 @@ class User extends Authenticatable
     public function complaints() {
         return $this->hasMany(Complaint::class);
     }
+
+    public function employee() {
+        return $this->hasOne(Employee::class);
+    }
 }
