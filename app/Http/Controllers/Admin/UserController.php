@@ -186,9 +186,19 @@ class UserController extends Controller
 
         try {
 
-            $user = User::create([
-                'name' => $request->input('name')
-            ]);
+            $userData = [];
+            $userData['username'] = $request->input('username');
+            $userData['email'] = $request->input('email');
+            $userData['first_name'] = $request->input('first_name');
+            $userData['last_name'] = $request->input('last_name');
+
+            $user = User::create($userData);
+
+            $employeeData = [];
+            $employeeData['identity_card_number'] = $request->identity_card_number;
+            $employeeData['department_id'] = $request->department;
+            
+            $user->employee()->create($employeeData);
 
             DB::commit();
 
