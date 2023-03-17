@@ -22,7 +22,7 @@
             <label class="form-check-label" for="{{ $name }}">{{ $label }}</label>
         </div>
     @elseif ($type == 'select')
-        <select class="form-control text-capitalize @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}"{{ isset($required) && $required ? ' required' : '' }}>
+        <select class="form-control text-capitalize @if(isset($select2)) select2 w-100 @endif @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}"{{ isset($required) && $required ? ' required' : '' }} @if(isset($select2)) multiple="multiple" @endif>
             <option value="">-- Select --</option>
             @foreach ($options as $optionValue => $optionLabel)
                 {{-- <option value="{{ $optionValue }}" {{ old($name) == $optionValue || $value == $optionValue ? ' selected' : '' }}>{{ $optionLabel }}</option> --}}
