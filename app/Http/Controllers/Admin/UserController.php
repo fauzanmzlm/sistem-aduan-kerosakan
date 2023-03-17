@@ -163,14 +163,15 @@ class UserController extends Controller
         $pageTitle = "Create User";
         $pageDescription = "This page allows users to create user.";
 
-        $roles = Role::latest()->get();
         $departmentOptions = Department::pluck('name', 'id')->all();
+        $roleOptions = Role::pluck('name', 'id')->all();
+
 
         return view('admin.user.create', [
             'pageTitle' => $pageTitle,
             'pageDescription' => $pageDescription,
-            'roles' => $roles,
-            'departmentOptions' => $departmentOptions
+            'departmentOptions' => $departmentOptions,
+            'roleOptions' => $roleOptions
         ]);
     }
 
@@ -182,6 +183,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        dd($request->all());
         DB::beginTransaction();
 
         try {
