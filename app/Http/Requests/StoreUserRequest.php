@@ -24,7 +24,12 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            ''
+            // 'username' => 'required',
+            // 'identity_card_number' => 'required',
+            // 'email' => 'required',
+            // 'department' => 'required',
+            // 'first_name' => 'required',
+            // 'last_name' => 'required',
         ];
     }
 }
