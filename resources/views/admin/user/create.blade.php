@@ -23,7 +23,9 @@
                                 @include('admin.user.fields', [
                                     'action' => 'create',
                                 ])
-                                @include('components.create-button')
+                                @include('components.button'[
+                                    'create' => true,
+                                ])
                             </form>
                         </div>
                     </div>
