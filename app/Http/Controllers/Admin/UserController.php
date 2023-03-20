@@ -202,6 +202,17 @@ class UserController extends Controller
             
             $user->employee()->create($employeeData);
 
+            // add role
+            if ($request->has('roles')) {
+                foreach ($request->roles as $roleKey => $roleValue ) {
+                    $role = Role::find($roleValue);
+                    // assign role to the user
+                    if (!empty($role)) {
+                        $user->assignRole($role->name);
+                    }
+                }
+            }
+
             DB::commit();
 
             return redirect()->route('admin.users.index')->with([
