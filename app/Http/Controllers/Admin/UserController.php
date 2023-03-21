@@ -183,7 +183,6 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        dd($request->all());
         DB::beginTransaction();
 
         try {
