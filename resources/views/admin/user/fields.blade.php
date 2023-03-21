@@ -24,7 +24,7 @@
                 'type' => 'text',
                 'name' => 'username',
                 'label' => 'Username',
-                // 'required' => true,
+                'required' => true,
             ])
         </div>
         <div class="col-6">
@@ -33,7 +33,7 @@
                 'type' => 'text',
                 'name' => 'identity_card_number',
                 'label' => 'Identity Card Number',
-                // 'required' => true,
+                'required' => true,
             ])
         </div>
     </div>
@@ -44,7 +44,7 @@
                 'type' => 'email',
                 'name' => 'email',
                 'label' => 'Email',
-                // 'required' => true,
+                'required' => true,
             ])
         </div>
         <div class="col-6">
@@ -53,7 +53,7 @@
                 'type' => 'select',
                 'name' => 'department',
                 'label' => 'Department',
-                // 'required' => true,
+                'required' => true,
                 'options' => $departmentOptions
             ])
         </div>
@@ -65,7 +65,7 @@
                 'type' => 'text',
                 'name' => 'first_name',
                 'label' => 'First Name',
-                // 'required' => true,
+                'required' => true,
             ])
         </div>
         <div class="col-6">
@@ -74,7 +74,7 @@
                 'type' => 'text',
                 'name' => 'last_name',
                 'label' => 'Last Name',
-                // 'required' => true,
+                'required' => true,
             ])
         </div>
     </div>
@@ -83,7 +83,7 @@
         'type' => 'select',
         'name' => 'role',
         'label' => 'Role',
-        // 'required' => true,
+        'required' => true,
         'options' => $roleOptions,
         'select2' => true,
     ])
