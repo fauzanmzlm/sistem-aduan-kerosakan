@@ -21,8 +21,8 @@
                 //     searchable: false
                 // },
                 {
-                    data: 'name',
-                    name: 'name'
+                    data: 'full_name',
+                    name: 'full_name'
                 },
                 {
                     data: 'username',
