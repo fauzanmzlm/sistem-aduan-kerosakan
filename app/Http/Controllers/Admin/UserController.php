@@ -52,7 +52,7 @@ class UserController extends Controller
                
                 // Query
                 $query = DB::table('users')
-                    ->select('id', 'name', 'username', 'email', 'account_status_id', 'created_at', 'updated_at');
+                    ->select('id', 'first_name', 'last_name', 'username', 'email', 'account_status_id', 'created_at', 'updated_at');
                 
                 // Apply sorting
                 $sortColumn = $request->input('order.0.column');
@@ -67,7 +67,8 @@ class UserController extends Controller
                 //     'roles.name'
                 // ];
                 $columns = [
-                    'name',
+                    'first_name',
+                    'last_name',
                     'username',
                     'email',
                     'created_at',
@@ -87,7 +88,8 @@ class UserController extends Controller
                         //     ->orWhere('users.updated_at', 'like', "%{$searchValue}%")
                         //     ->orWhere('account_statuses.name', 'like', "%{$searchValue}%")
                         //     ->orWhere('roles.name', 'like', "%{$searchValue}%");
-                        $query->where('name', 'like', "%{$searchValue}%")
+                        $query->where('first_name', 'like', "%{$searchValue}%")
+                            ->orWhere('last_name', 'like', "%{$searchValue}%")
                             ->orWhere('username', 'like', "%{$searchValue}%")
                             ->orWhere('email', 'like', "%{$searchValue}%")
                             ->orWhere('created_at', 'like', "%{$searchValue}%")
@@ -104,6 +106,9 @@ class UserController extends Controller
 
                 // Add custom column to DataTables JSON response
                 collect($data->items())->map(function ($row) {
+
+                    // add full name
+                    $row->full_name = $row->first_name ." ". $row->last_name;
 
                     // Add role column
                     $row->role = "";
