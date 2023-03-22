@@ -20,7 +20,8 @@ class UserTableSeeder extends Seeder
     {
         //create data user
         $userCreate = User::create([
-            // 'name'      => 'Muhammad Fauzan',
+            'first_name' => "MUHAMMAD FAUZAN",
+            'last_name' => "BIN MAZLAM",
             'username'      => 'fauzanmzlm',
             'email'     => 'admin@gmail.com',
             'password'  => bcrypt('123'),
@@ -39,16 +40,16 @@ class UserTableSeeder extends Seeder
 
 
         // Add code to seed the users table
-        for ($i = 1; $i <= 10000; $i++) {
-            DB::table('users')->insert([
-                // 'name' => 'User '.$i,
-                'username' => 'Username '. $i,
-                'email' => 'user'.$i.'@example.com',
-                'password' => bcrypt('123'),
-                'created_at' => now(),
-                'updated_at' => now(),
-                'account_status_id' => 2,
-            ]);
-        }
+        // for ($i = 1; $i <= 10000; $i++) {
+        //     DB::table('users')->insert([
+        //         // 'name' => 'User '.$i,
+        //         'username' => 'Username '. $i,
+        //         'email' => 'user'.$i.'@example.com',
+        //         'password' => bcrypt('123'),
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //         'account_status_id' => 2,
+        //     ]);
+        // }
     }
 }
